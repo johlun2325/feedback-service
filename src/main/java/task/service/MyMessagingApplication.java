@@ -9,27 +9,30 @@ import jakarta.inject.Inject;
 import java.util.stream.Stream;
 
 @ApplicationScoped
-public class MyMessagingApplication {
+public class MyMessagingApplication
+{
 
     @Inject
     @Channel("words-out")
     Emitter<String> emitter;
 
     /**
-     * Sends message to the "words-out" channel, can be used from a JAX-RS resource or any bean of your application.
-     * Messages are sent to the broker.
+     * Sends message to the "words-out" channel, can be used from a JAX-RS resource
+     * or any bean of your application. Messages are sent to the broker.
      **/
-    void onStart(@Observes StartupEvent ev) {
+    void onStart(@Observes StartupEvent ev)
+    {
         Stream.of("Hello", "with", "Quarkus", "Messaging", "message").forEach(string -> emitter.send(string));
     }
 
     /**
-     * Consume the message from the "words-in" channel, uppercase it and send it to the uppercase channel.
-     * Messages come from the broker.
+     * Consume the message from the "words-in" channel, uppercase it and send it to
+     * the uppercase channel. Messages come from the broker.
      **/
     @Incoming("words-in")
     @Outgoing("uppercase")
-    public Message<String> toUpperCase(Message<String> message) {
+    public Message<String> toUpperCase(Message<String> message)
+    {
         return message.withPayload(message.getPayload().toUpperCase());
     }
 
@@ -37,7 +40,8 @@ public class MyMessagingApplication {
      * Consume the uppercase channel (in-memory) and print the messages.
      **/
     @Incoming("uppercase")
-    public void sink(String word) {
+    public void sink(String word)
+    {
         System.out.println(">> " + word);
     }
 }

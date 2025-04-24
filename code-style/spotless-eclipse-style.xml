@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profiles version="2">
+    <profile kind="CodeFormatterProfile" name="AllmanStyle" version="12">
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_type_declaration" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_method_declaration" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_block" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_switch" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_array_initializer" value="next_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="tab"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+        <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing" value="true"/>
+    </profile>
+</profiles>

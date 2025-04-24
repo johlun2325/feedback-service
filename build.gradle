@@ -1,6 +1,16 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id 'com.diffplug.spotless' version '6.25.0'
+}
+
+spotless {
+    java {
+        eclipse().configFile('code-style/spotless-eclipse-style.xml')
+        trimTrailingWhitespace()
+        endWithNewline()
+        indentWithSpaces(4)
+    }
 }
 
 repositories {
