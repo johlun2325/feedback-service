@@ -29,6 +29,8 @@ dependencies {
     implementation 'io.quarkus:quarkus-jackson'
     implementation 'io.quarkus:quarkus-smallrye-health'
     implementation 'io.quarkus:quarkus-arc'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testImplementation 'io.quarkus:quarkus-junit5'
 }
 
