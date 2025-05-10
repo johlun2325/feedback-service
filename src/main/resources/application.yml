@@ -35,24 +35,36 @@ mp:
         topic: "item-created"
         value:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
       updated:
         connector: smallrye-kafka
         topic: "item-updated"
         value:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
       deleted:
         connector: smallrye-kafka
         topic: "item-deleted"
         value:
-         deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#    outgoing:
- #     priority:
-  #      connector: smallrye-kafka
-   #     topic: "feedback-priority"
-    #    value:
-     #     serializer: org.apache.kafka.common.serialization.StringSerializer
- #     completed:
-  #      connector: smallrye-kafka
-   #     topic: "feedback-completed"
-    #    value:
-     #     serializer: org.apache.kafka.common.serialization.StringSerializer
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    outgoing:
+      completed:
+        connector: smallrye-kafka
+        topic: "feedback-completed"
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        partitioner: org.apache.kafka.clients.producer.internals.DefaultPartitioner
+      priority:
+        connector: smallrye-kafka
+        topic: "feedback-priority"
+        value:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        key:
+          serializer: org.apache.kafka.common.serialization.StringSerializer
+        partitioner: org.apache.kafka.clients.producer.internals.DefaultPartitioner

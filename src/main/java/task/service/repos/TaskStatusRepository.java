@@ -7,7 +7,7 @@ import task.service.models.TaskStatus;
 import java.util.List;
 
 @ApplicationScoped
-public class TaskStatusRepository implements PanacheMongoRepository<TaskStatus>
+public final class TaskStatusRepository implements PanacheMongoRepository<TaskStatus>
 {
     public TaskStatus findByUid(final String uid)
     {
@@ -19,8 +19,8 @@ public class TaskStatusRepository implements PanacheMongoRepository<TaskStatus>
         return list("userUid = ?1 and completed = ?2", userUid, true);
     }
 
-    public List<TaskStatus> findPriorityByUserUid(final String userUid)
+    public List<TaskStatus> findNotCompletedPriorityByUserUid(final String userUid)
     {
-        return list("userUid = ?1 and priority = ?2", userUid, true);
+        return list("userUid = ?1 and priority = ?2 and completed = ?3", userUid, true, false);
     }
 }

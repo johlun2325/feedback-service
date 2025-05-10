@@ -9,7 +9,7 @@ import org.bson.codecs.pojo.annotations.BsonRepresentation;
 
 @Data
 @MongoEntity(collection = "tasks")
-public class TaskStatus
+public final class TaskStatus
 {
     @JsonIgnore
     @BsonId
