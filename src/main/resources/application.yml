@@ -1,6 +1,12 @@
 quarkus:
   profile:
     parent: env
+  log:
+    level: INFO
+    category:
+      "task.service":
+        level: DEBUG
+      "io.smallrye.faulttolerance": INFO
 
   http:
     port: ${PORT}
@@ -9,12 +15,8 @@ quarkus:
     connection-string: ${LOCAL_MONGO_URL}
     database: ${LOCAL_MONGO_DB}
     authentication-database: ${LOCAL_MONGO_AUTH_DB}
-    username:
-    password:
-
-  log:
-    category:
-      "io.smallrye.faulttolerance": INFO
+    username: admin
+    password: password
 
 kafka:
   bootstrap:
