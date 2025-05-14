@@ -14,9 +14,6 @@ quarkus:
   mongodb:
     connection-string: ${LOCAL_MONGO_URL}
     database: ${LOCAL_MONGO_DB}
-    authentication-database: ${LOCAL_MONGO_AUTH_DB}
-    username: admin
-    password: password
 
 kafka:
   bootstrap:

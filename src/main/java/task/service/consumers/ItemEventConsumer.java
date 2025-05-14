@@ -25,25 +25,23 @@ public final class ItemEventConsumer
     ObjectMapper objectMapper;
 
     @Incoming("created")
-    public void consumeCreated(final String message)
+    public void consumeCreated(final String jsonMsg)
     {
         try
         {
-            var event = objectMapper.readValue(message, ItemEvent.class);
-
+            var event = objectMapper.readValue(jsonMsg, ItemEvent.class);
             LOGGER.info("Received create event: {}", event.getEvent());
-            LOGGER.info("Item create UID: {}", event.getItemUid());
 
             var taskStatus = taskStatusService.createStatus(event);
             repository.persist(taskStatus);
 
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
+            var completedCount = repository.findCompletedByUserUid(event.getUserUid()).size();
+
             var task = repository.findByUid(event.getItemUid());
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), false, false, task.isCompleted(),
-                    priorityCount);
-            LOGGER.debug("Processed feedback");
-
+            taskStatusService.feedback(event.getUserUid(), event.getEvent(), task.isCompleted(), priorityCount,
+                    completedCount);
         } catch (final Exception e)
         {
             LOGGER.error("Failed to process item-created event", e);
@@ -57,22 +55,17 @@ public final class ItemEventConsumer
         {
             var event = objectMapper.readValue(message, ItemEvent.class);
             LOGGER.info("Received update event: {}", event.getEvent());
-            LOGGER.info("Item update UID: {}", event.getItemUid());
 
             var prevStatus = repository.findByUid(event.getItemUid());
-
-            var wasCompleted = prevStatus.isCompleted();
-            var wasPriority = prevStatus.isPriority();
 
             var updatedStatus = taskStatusService.updateStatus(event, prevStatus);
             repository.update(updatedStatus);
 
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
+            var completedCount = repository.findCompletedByUserUid(event.getUserUid()).size();
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), wasCompleted, wasPriority,
-                    updatedStatus.isCompleted(), priorityCount);
-
-            LOGGER.debug("Processed feedback");
+            taskStatusService.feedback(event.getUserUid(), event.getEvent(), updatedStatus.isCompleted(), priorityCount,
+                    completedCount);
 
         } catch (final Exception e)
         {
@@ -87,21 +80,16 @@ public final class ItemEventConsumer
         {
             var event = objectMapper.readValue(message, ItemEvent.class);
             LOGGER.info("Received delete event: {}", event.getEvent());
-            LOGGER.info("Item delete UID: {}", event.getItemUid());
 
             var statusToBeDeleted = repository.findByUid(event.getItemUid());
-
-            var wasCompleted = statusToBeDeleted.isCompleted();
-            var wasPriority = statusToBeDeleted.isPriority();
 
             repository.delete(statusToBeDeleted);
 
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
+            var completedCount = repository.findCompletedByUserUid(event.getUserUid()).size();
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), wasCompleted, wasPriority,
-                    statusToBeDeleted.isCompleted(), priorityCount);
-
-            LOGGER.debug("Processed feedback");
+            taskStatusService.feedback(event.getUserUid(), event.getEvent(), statusToBeDeleted.isCompleted(),
+                    priorityCount, completedCount);
 
         } catch (final Exception e)
         {

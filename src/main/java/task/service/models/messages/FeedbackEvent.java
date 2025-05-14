@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public final class FeedbackEvent
 {
     private String event;
+    private String feedbackUid;
     private String userUid;
     private String type;
     private String feedback;
