@@ -12,9 +12,9 @@ import task.service.producers.ItemFeedbackProducer;
 import java.util.UUID;
 
 @ApplicationScoped
-public final class TaskStatusService
+public final class FeedbackService
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskStatusService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeedbackService.class);
     private static final int PRIORITY_LIMIT = 5;
     private static final String PRIORITY_ERROR_MSG = "Failed to send priority event";
     private static final String COMPLETED_ERROR_MSG = "Failed to send completed event";
@@ -91,7 +91,7 @@ public final class TaskStatusService
 
         if (completed)
         {
-            event.setFeedback("Yes! You completed your task! Your total is: " + completedCount + "!");
+            event.setFeedback("Yes! You completed your task! Your total is " + completedCount);
         } else
         {
             event.setFeedback("I believe in you! Go do stuff!");
@@ -112,7 +112,7 @@ public final class TaskStatusService
 
         if (priorityCount >= PRIORITY_LIMIT)
         {
-            event.setFeedback("Warning! you have " + priorityCount + " priority items!");
+            event.setFeedback("Warning! You have " + priorityCount + " priority items!");
         } else
         {
             event.setFeedback("Priority is under under control");

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import task.service.models.messages.ItemEvent;
 import task.service.repos.TaskStatusRepository;
-import task.service.services.TaskStatusService;
+import task.service.services.FeedbackService;
 
 @ApplicationScoped
 public final class ItemEventConsumer
@@ -16,7 +16,7 @@ public final class ItemEventConsumer
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemEventConsumer.class);
 
     @Inject
-    TaskStatusService taskStatusService;
+    FeedbackService feedbackService;
 
     @Inject
     TaskStatusRepository repository;
@@ -32,7 +32,7 @@ public final class ItemEventConsumer
             var event = objectMapper.readValue(jsonMsg, ItemEvent.class);
             LOGGER.info("Received create event: {}", event.getEvent());
 
-            var taskStatus = taskStatusService.createStatus(event);
+            var taskStatus = feedbackService.createStatus(event);
             repository.persist(taskStatus);
 
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
@@ -40,7 +40,7 @@ public final class ItemEventConsumer
 
             var task = repository.findByUid(event.getItemUid());
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), task.isCompleted(), priorityCount,
+            feedbackService.feedback(event.getUserUid(), event.getEvent(), task.isCompleted(), priorityCount,
                     completedCount);
         } catch (final Exception e)
         {
@@ -58,13 +58,13 @@ public final class ItemEventConsumer
 
             var prevStatus = repository.findByUid(event.getItemUid());
 
-            var updatedStatus = taskStatusService.updateStatus(event, prevStatus);
+            var updatedStatus = feedbackService.updateStatus(event, prevStatus);
             repository.update(updatedStatus);
 
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
             var completedCount = repository.findCompletedByUserUid(event.getUserUid()).size();
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), updatedStatus.isCompleted(), priorityCount,
+            feedbackService.feedback(event.getUserUid(), event.getEvent(), updatedStatus.isCompleted(), priorityCount,
                     completedCount);
 
         } catch (final Exception e)
@@ -88,7 +88,7 @@ public final class ItemEventConsumer
             var priorityCount = repository.findNotCompletedPriorityByUserUid(event.getUserUid()).size();
             var completedCount = repository.findCompletedByUserUid(event.getUserUid()).size();
 
-            taskStatusService.feedback(event.getUserUid(), event.getEvent(), statusToBeDeleted.isCompleted(),
+            feedbackService.feedback(event.getUserUid(), event.getEvent(), statusToBeDeleted.isCompleted(),
                     priorityCount, completedCount);
 
         } catch (final Exception e)
