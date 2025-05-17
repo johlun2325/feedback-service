@@ -26,11 +26,6 @@ public final class FeedbackService
     {
         LOGGER.debug("Creating status for item: {} and user {}", event.getItemUid(), event.getUserUid());
 
-        if (event.getType() == null)
-        {
-            return new TaskStatus();
-        }
-
         var status = new TaskStatus();
         var content = event.getContent();
 
@@ -42,7 +37,7 @@ public final class FeedbackService
         status.setCreatedAt(event.getTime());
         status.setUpdatedAt(event.getTime());
 
-        if (event.getType().equals("completed"))
+        if (content.containsKey("completed") && (boolean) content.get("completed"))
         {
             status.setCompletedAt(event.getTime());
         }
@@ -60,7 +55,7 @@ public final class FeedbackService
         prevStatus.setCompleted(content.containsKey("completed") && (boolean) content.get("completed"));
         prevStatus.setUpdatedAt(content.containsKey("time") ? (long) content.get("time") : event.getTime());
 
-        if (event.getType().equals("completed"))
+        if (content.containsKey("completed") && (boolean) content.get("completed"))
         {
             prevStatus.setCompletedAt(event.getTime());
         }
@@ -81,7 +76,8 @@ public final class FeedbackService
         }
     }
 
-    private FeedbackEvent buildCompletedEvent(final boolean completed, final int completedCount, final String userUid)
+    // package-private for tests
+    FeedbackEvent buildCompletedEvent(final boolean completed, final int completedCount, final String userUid)
     {
         var event = new FeedbackEvent();
         event.setEvent("feedback-completed");
@@ -102,7 +98,8 @@ public final class FeedbackService
         return event;
     }
 
-    private FeedbackEvent buildPriorityEvent(final String userUid, final int priorityCount)
+    // package-private for tests
+    FeedbackEvent buildPriorityEvent(final String userUid, final int priorityCount)
     {
         var event = new FeedbackEvent();
         event.setEvent("feedback-priority");

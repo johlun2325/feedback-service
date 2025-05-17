@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.Setter;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.slf4j.Logger;
@@ -15,14 +16,17 @@ public final class ItemFeedbackProducer
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ItemFeedbackProducer.class);
 
+    @Setter
     @Inject
     @Channel("completed")
     Emitter<String> itemCompletedEmitter;
 
+    @Setter
     @Inject
     @Channel("priority")
     Emitter<String> itemPriorityEmitter;
 
+    @Setter
     @Inject
     ObjectMapper objectMapper;
 
