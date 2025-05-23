@@ -1,11 +1,18 @@
 # feedback-service
 
-This project uses Quarkus
+This project uses Quarkus.
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
 ## About this project
 This project is part of a Task-managing application. It is one of several microservices that make the base
 of said application. Responsible for handling feedback logic for user interactions. Persists relevant feedback data.
+
+## Linked repositories
+- [task-client](https://github.com/johlun2325/task-client)
+- [client-task-service](https://github.com/johlun2325/client-task-service)
+- [authentication-service](https://github.com/johlun2325/authentication-service)
+- [task-service](https://github.com/johlun2325/task-service)
+
 
 ### Running the application in dev mode
 
